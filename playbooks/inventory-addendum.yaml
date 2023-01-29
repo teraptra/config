@@ -1,0 +1,29 @@
+---
+
+urouters:
+  vars:
+    ansible_network_os: edgeos
+    ansible_user: autobot
+
+routers:
+  children:
+    urouters:
+
+network:
+  children:
+    routers:
+
+proxmox:
+
+kubernetes:
+
+linux:
+  children:
+    kubernetes:
+    proxmox:
+  vars:
+    ansible_python_interpreter=/usr/bin/python3
+    ansible_connection=ssh
+    ansible_user=ansible
+    ansible_become=yes
+    ansible_become_method=sudo

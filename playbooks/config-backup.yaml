@@ -1,0 +1,39 @@
+---
+- name: Backup Router Configurations
+  hosts: routers
+  gather_facts: false
+
+  vars:
+    backup_path: "/var/configbak/"
+    key_file: "{{ ssh_path }}/id_configbak"
+    repo: "git@github.com:teraptra/config-backups.git"
+
+  pre_tasks:
+   - name: Push Backup to Git Repository
+     ansible.builtin.git:
+       repo: "{{ repo }}"
+        dest: "{{ backup_path }}"
+       update: yes
+       key_file: "{{ key_file }}"
+  tasks:
+    - name: Backup Configuration
+      cli_command:
+        command: "{{backup}}"
+      register: backup
+
+    - name: Save Backup to File
+      copy:
+        content: "{{ backup.stdout_lines }}"
+        dest: "{{ backup_path }}/{{ inventory_hostname }}.txt"
+
+#  post_tasks:
+#    - name: Push Backup to Git Repository
+#      ansible.builtin.shell: |
+#        git add *.txt
+#        git config user.email "configbak@ansible-runner"
+#        git config user.name "ConfigMan"
+#        git commit -m "backup from {{ ansible_date_time.date }}"
+#        git push origin HEAD:master -v --progress
+#        chdir: "{{ backup_path }}"
+#      environment:
+#        GIT_SSH_COMMAND: "ssh -i {{ key_file }}"
