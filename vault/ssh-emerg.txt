@@ -1,0 +1,20 @@
+{
+  "algorithm_signer": "rsa-sha2-512",
+  "allow_user_certificates": true,
+  "allow_user_key_ids": false,
+  "allowed_extensions": "permit-pty,permit-agent-forwarding",
+  "allowed_users": "{{identity.entity.aliases.auth_oidc_2aff6d9b.name}}",
+  "allowed_users_template": true,
+  "default_extensions": {
+    "permit-agent-forwarding": "",
+    "permit-pty": ""
+  },
+  "default_extensions_template": false,
+  "default_user": "{{identity.entity.aliases.auth_oidc_2aff6d9b.name}}",
+  "default_user_template": true,
+  "key_id_format": "vault-{{token_display_name}}-{{role_name}}-{{public_key_hash}}",
+  "key_type": "ca",
+  "max_ttl": "90d",
+  "not_before_duration": 30,
+  "ttl": "90d"
+}
